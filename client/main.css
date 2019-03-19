@@ -1,0 +1,108 @@
+body {
+  font-family: sans-serif;
+  background-color: #315481;
+  background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+  background-attachment: fixed;
+ 
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ 
+  padding: 0;
+  margin: 0;
+ 
+  font-size: 14px;
+}
+
+.text-center{
+    margin-top: 250px;
+    text-align:center;
+    font-size: 5.0rem;
+
+
+}
+.text-center-new{
+    text-align:center;
+    font-size: 2.0rem;
+
+}
+
+/*.h1-class{
+  text-align:center;
+}*/
+
+.row{
+  margin-top:50px;
+  text-align:center;
+}
+.btn-primary{
+  width:2000px;
+}
+
+.button-toolbar{
+    width:1000px;
+
+}
+
+.picturelabel{
+      margin-top: 250px;
+      align-content :center;
+}
+
+.formClass{
+        align-content :center;
+
+}
+
+.gameform{
+  text-align: center;
+
+}
+
+.startgame{
+       margin-top: 250px;
+        align-content :center; 
+}
+
+.main {
+      display: flex;
+      justify-content: center;
+    }
+    .color-guide {
+      margin: 20px 40px;
+    }
+    h5 {
+      margin-bottom: 10px;
+    }
+    .user {
+      padding: 7px 15px;
+      border-radius: 4px;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      background: #EE92C2;
+      margin: 10px 0;
+    }
+    .guest {
+      background: #F0C987;
+      color: white;
+    }
+
+
+/*.nav-new{
+width: 100%;
+    max-width: 1140px;
+    min-width: 1200p
+
+}
+
+@media (min-width: 1200px)
+.nav-new {
+    max-width: 1140px;
+}*/
+
+ 
+
+
