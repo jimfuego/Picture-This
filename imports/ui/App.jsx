@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Meteor } from "meteor/meteor";
-//import Chat from "./Chat.jsx";
+import Chat from "./Chat.jsx";
 import NavBar from "./NavBar.jsx";
 import Creategame from "./Creategame.jsx";
 import Gamecreator from "./Gamecreator.jsx";
@@ -14,7 +14,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 const HomeComponent = () => {
   return (
     <div>
-          {Meteor.user() ? <Creategame/>  : <div><h1 className="text-center">Picture-This</h1>
+          {Meteor.userId() ? <Creategame/>  : <div><h1 className="text-center">Picture-This</h1>
         <p className="text-center-new">Fun SFW picture guessing game </p></div>}
     </div>
   );
@@ -35,7 +35,7 @@ const NotFoundPage = () =>
   const CreateGame = () => {
   return(
   <div>
-    {Meteor.user() ? <GameCreator/> : <h6 className="text-center">Enter picture name</h6>}
+    {Meteor.userId() ? <Gamecreator/> : {HomeComponent}}
   </div>
   );
 };
@@ -44,18 +44,12 @@ const NotFoundPage = () =>
   const GameCreator= () =>{
   return (
     <div>
-      {Meteor.user() ? <NotFoundPage/> :
-    <Fragment>
-            <h3 style={{ textAlign: "center" }}>Dos Paint</h3>
-            <div className="main">
-              <div className="color-guide">
-                <h5>Color Guide</h5>
-                <div className="user user">User</div>
-                <div className="user guest">Guest</div>
-              </div>
-              <Gamecreator/>
-            </div>
-          </Fragment>}
+      {Meteor.userId() ? <Gamecreator/> :<div><h1 className="text-center">Picture-This</h1>
+        <p className="text-center-new">Fun SFW picture guessing game </p></div>
+    
+
+        }
+
     </div>
 
     );
@@ -66,11 +60,12 @@ const NotFoundPage = () =>
 
   */
 
+  /*const chat =() =>
+
+  */
+
 class App extends Component {
   render() {
-    /*if(Meteor.user()){
-       LobbyPage;
-    }*/
     return (
       <Router>
         <div>
@@ -78,7 +73,8 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={HomeComponent} />
             <Route exact path="/creategame" component={CreateGame}/>
-            <Route exact path="/gamecreator" component={Gamecreator}/>
+            <Route exact path="/gamecreator" component={GameCreator}/>
+            <Route exact path="/otherusers" component={Chat}/>
             <Route component={NotFoundPage} />
           </Switch>
           <br />
@@ -93,7 +89,7 @@ class App extends Component {
 
 export default withTracker(() => {
   return {
-    user: Meteor.user()
+    user: Meteor.userId()
   };
 })(App);
 

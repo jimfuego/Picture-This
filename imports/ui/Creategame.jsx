@@ -1,5 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Answer} from "../api/answer.js";
+
 //import PropTypes from "prop-types";
 //import { Meteor } from "meteor/meteor";
 
@@ -9,19 +11,33 @@ import {Link} from "react-router-dom";
 class Creategame extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: " "};
+    this.state = {value: " ", inSession: false};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({value: event.target.value, inSession: true});
+    Meteor.call("answer.insert",this.state.value, (err,res) => {
+    	if (err){
+    		alert("Error recording answer");
+    		console.log(err);
+    		return;
+    	}
+
+    	console.log("Answer inserted", res);
+    	this.setState({
+    		value: ""
+    	});
+    		
+    });
   }
 
   handleSubmit(event) {
     alert("A name was submitted: " + this.state.value);
     event.preventDefault();
+
   }
 
   render() {

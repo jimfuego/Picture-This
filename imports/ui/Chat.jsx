@@ -4,6 +4,8 @@ import { Meteor } from "meteor/meteor";
 
 import { withTracker } from "meteor/react-meteor-data";
 import { Messages } from "../api/messages.js";
+import Gamecreator from "./Gamecreator.jsx";
+
 
 class Chat extends Component {
   constructor(props) {
@@ -70,11 +72,11 @@ class Chat extends Component {
     console.log("Messages", this.props.messages);
     return (
       <div>
-        <h2>Messages</h2>
+        <h2>Guesses</h2>
         <div className="messsges">{this.renderMessages()}</div>
-        <h3>Enter your solution</h3>
+        <h3>Enter your guess</h3>
         <label htmlFor="inMessage">
-          Message:{" "}
+          Guess:{" "}
           <input
             className="form-control"
             type="text"
@@ -84,6 +86,7 @@ class Chat extends Component {
             onKeyPress={this.onKey.bind(this)}
           />
         </label>
+        <Gamecreator/>
       </div>
     );
   }
