@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 10febbb5e7f6bc247b9afe90b3d2128010857de6
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -27,4 +30,8 @@ Meteor.methods({
       player : Meteor.user().username
     });
   }
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 10febbb5e7f6bc247b9afe90b3d2128010857de6
