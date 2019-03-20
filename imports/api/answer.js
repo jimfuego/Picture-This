@@ -8,11 +8,11 @@ export const Answer = new Mongo.Collection("answer");
 
 if (Meteor.isServer) {
   Meteor.publish("answer", function guessesPublish() {
-    return Answer
-      .find({});
+    return Answer.find({});
   });
 }
 
+//sets answer to game creator's preference
 Meteor.methods({
   "answer.insert"(answer)  {
     check(answer, String);
@@ -22,9 +22,52 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    Answer.insert({
-      answer : answer,
-      player : Meteor.user().username
-    });
+    //stores solution from game creator
+    //if document exists
+    if(Answer.findOne({}) != undefined){
+      Answer.update({}, {
+        $set:{
+          answer : answer,
+          player : Meteor.user().username,
+          gameInProgress : true
+        }
+      });
+    }
+    //document doe snot exist
+    else {
+      Answer.insert({
+        answer : answer,
+        player : Meteor.user().username,
+        gameInProgress : true
+      });
+    }
+
+  }
+});
+
+//checks if @param guess matches the answer string
+Meteor.methods({
+  "answer.checkSolution"(guess)  {
+    check(guess, String);
+    if (Answer.findOne({answer : guess}) != undefined) {
+      Answer.update({}, {
+        $set:{
+          answer: " ",
+          player : " ",
+          gameInProgress : false
+        }
+      });
+      //game over - winner
+      return true;
+    }
+    //continue game
+    return false;
+  }
+});
+
+//returns true if a game is in progress
+Meteor.methods({
+  "answer.checkInProgress"() {
+    return (Answer.findOne({gameInProgress : true}) == true);
   }
 });

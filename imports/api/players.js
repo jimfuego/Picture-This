@@ -5,11 +5,18 @@ import { check } from "meteor/check";
 
 export const Players = new Mongo.Collection("players");
 
-if (Meteor.isServer) {
-  Meteor.publish("players", function playersPublish() {
+// if (Meteor.isServer) {
+//   Meteor.publish("players", function playersPublish() {
+//     return Players.find({});
+//   });
+// }
+
+// return current active player list
+Meteor.methods({
+  "guesses.guessesPublish"() {
     return Players.find({});
-  });
-}
+  }
+});
 
 Meteor.methods({
   "players.newPlayer"(player)  {
@@ -19,7 +26,6 @@ Meteor.methods({
     if (! this.userId) {
       throw new Meteor.Error("not-authorized");
     }
-
     Players.insert({
       player : Meteor.user().username
     });
