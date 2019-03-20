@@ -55,13 +55,14 @@ Meteor.methods({
   "answer.checkSolution"(guess)  {
     check(guess, String);
     if (Answer.findOne({answer : guess}) != undefined) {
-      Answer.update({}, {
-        $set:{
-          answer: " ",
-          player : " ",
-          gameInProgress : false
-        }
-      });
+      Answer.remove({});
+      // Answer.update({}, {
+      //   $set:{
+      //     answer: " ",
+      //     player : " ",
+      //     gameInProgress : false
+      //   }
+      // });
       //game over - winner
       return true;
     }
