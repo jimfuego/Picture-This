@@ -13,7 +13,7 @@ export const Players = new Mongo.Collection("players");
 
 // return current active player list
 Meteor.methods({
-  "guesses.guessesPublish"() {
+  "players.playersPublish"() {
     return Players.find({});
   }
 });
