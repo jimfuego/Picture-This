@@ -3,7 +3,7 @@ import React, { Component } from 'react';
         import Pusher from 'pusher-js';
 
 
-    class Gamecreator extends Component {
+    class Admin extends Component {
       constructor(props) {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
@@ -114,4 +114,4 @@ import React, { Component } from 'react';
         );
       }
     }
-    export default Gamecreator;
+    export default Admin;

@@ -1,9 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment} from "react";
 import { Meteor } from "meteor/meteor";
-import Chat from "./Chat.jsx";
+import Otherusers from "./Otherusers.jsx";
 import NavBar from "./NavBar.jsx";
 import Creategame from "./Creategame.jsx";
-import Gamecreator from "./Gamecreator.jsx";
+import Admin from "./Admin.jsx";
+import {Redirect} from "react-router-dom";
 
 
 import { withTracker } from "meteor/react-meteor-data";
@@ -11,101 +12,141 @@ import { withTracker } from "meteor/react-meteor-data";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 
-const HomeComponent = () => {
-  return (
-    <div>
-          {Meteor.userId() ? <Creategame/>  : <div><h1 className="text-center">Picture-This</h1>
-        <p className="text-center-new">Fun SFW picture guessing game </p></div>}
-    </div>
-  );
-};
+import HomeComponent from "./HomeComponent.jsx"
 
 /*const AboutComponent = () =>
   <div>
     <h2>About</h2>
     <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est saepe, ea minus quae ab nam impedit eaque. Adipisci expedita sit repudiandae, enim sapiente ipsam voluptas obcaecati veritatis, sunt eius nemo.</div>
-  </div>;*/
+    </div>;*/
 
-const NotFoundPage = () =>
-  <div>
+    const NotFoundPage = () =>
+    <div>
     <h2>Page not found</h2>
     <div>We should call Suhas 🤷‍♀️</div>
-  </div>;
+    </div>;
 
+  //if game is in progress then go to game creator page else go to other users page. Remove home compnent
   const CreateGame = () => {
-  return(
-  <div>
-    {Meteor.userId() ? <Gamecreator/> : {HomeComponent}}
+    return(
+      <div>
+      {Meteor.call("answer.checkInProgress",null, (err,res) => {
+        if (err){
+          alert("Error recording answer");
+          console.log(err);
+          return;
+        }
+
+        if(res==true){
+          return <Admin/>;
+        }
+      })
+
+    }  
+    </div>
+    );
+  };
+
+//Should route to player profile page instead of not found page
+const AdminPage= () =>{
+  return (
+    <div>
+    {Meteor.call("answer.checkSolution",guess, (err,res) => {
+      if (err){
+        alert("Error recording answer");
+        console.log(err);
+        return;
+      }
+        //if the game is won route to profile page
+        if(res==true){
+          return <NotFoundPage/>;
+        }
+      })
+
+  }  
   </div>
+
   );
 };
 
 
-  const GameCreator= () =>{
-  return (
+//should go to profile page if winning condition is met  
+const OtherUsers = (guess) => {
+  return(
     <div>
-      {Meteor.userId() ? <Gamecreator/> :<div><h1 className="text-center">Picture-This</h1>
-        <p className="text-center-new">Fun SFW picture guessing game </p></div>
+    {Meteor.call("answer.checkSolution",guess, (err,res) => {
+      if (err){
+        alert("Error recording answer");
+        console.log(err);
+        return;
+      }
+        //if the game is won route to profile page
+        if(res==true){
+          return <NotFoundPage/>;
         }
+      })
 
-    </div>
+  }  
+  </div>
+  );
 
-    );
 };
-    
+
+
+    //should route to create game when a game is finished 
     /*const PlayerProfile = () =>{
       {Meteor.user() ? <Playerprofile/> : 
     
-    }*/
+      }*/
 
-class App extends Component {
-    constructor(props) {
-    super(props);
-    this.state = {value: ''};
+      class App extends Component {
+        constructor(props) {
+          super(props);
+          this.state = {value: ''};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
+          this.handleChange = this.handleChange.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+        handleChange(event) {
+          this.setState({value: event.target.value});
+        }
 
-  handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
-  render() {
-    return (
-      <Router>
-        <div>
-          <NavBar />
-          <Switch>
+        handleSubmit(event) {
+          alert('A name was submitted: ' + this.state.value);
+          event.preventDefault();
+        }
+        render() {
+          return (
+            <Router>
+            <div>
+            <NavBar />
+            <Switch>
             <Route exact path="/" component={HomeComponent} />
-            <Route exact path="/creategame" component={CreateGame}/>
-            <Route exact path="/gamecreator" component={GameCreator}/>
-            <Route exact path="/otherusers" component={Chat}/>
+            <Route exact path="/creategame" component={Creategame}/>
+            <Route exact path="/admin" component={AdminPage}/>
+            <Route exact path="/otherusers" component={Otherusers}/>
             <Route component={NotFoundPage} />
-          </Switch>
-          <br />
-          <div></div>
+            </Switch>
+            <br />
+            <div></div>
 
 
-        </div>
-      </Router>
-    );
-  }
-}
+            </div>
+            </Router>
+            );
+        }
+      }
 
-function isLoggedIn() {
-  console.log("yes");
-  return Meteor.user() ? true : false;
-}
+      function isLoggedIn() {
+        console.log("yes");
+        return Meteor.user() ? true : false;
+      }
 
-export default withTracker(() => {
-  return {
-    user: Meteor.userId()
-  };
-})(App);
+      export default withTracker(() => {
+        return {
+          user: Meteor.userId()
+        };
+      })(App);
 
 /*const LobbyPage = () => {
 return(

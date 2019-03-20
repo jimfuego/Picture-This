@@ -29,7 +29,7 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    New_User.insert({
+    Users.insert({
       userName : user.userName,
       password: user.password,
       gamesPlayed: 0,

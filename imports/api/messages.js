@@ -7,7 +7,13 @@ export const Messages = new Mongo.Collection("messages");
 
 if (Meteor.isServer) {
   Meteor.publish("messages", function messagesPublish() {
-    return Messages.find({});
+    return Messages
+      .find({}, {
+        limit: 10,
+        sort: {
+          createdAt: -1
+        }
+      });
   });
 }
 

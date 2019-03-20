@@ -5,17 +5,18 @@ import { check } from "meteor/check";
 
 export const Guesses = new Mongo.Collection("guesses");
 
-// if (Meteor.isServer) {
-//   Meteor.publish("guesses", function guessesPublish() {
-//     return Guesses.find({});
-//   });
-// }
-
-Meteor.methods({
-  "guesses.guessesPublish"() {
-    return Guesses.find({});
-  }
-});
+if (Meteor.isServer) {
+  Meteor.publish("guesses", function guessesPublish() {
+    return Guesses
+      .find({}, {
+        // FIXME: don't limit or sort... maybe sort
+        limit: 10,
+        sort: {
+          createdAt: -1
+        }
+      });
+  });
+}
 
 Meteor.methods({
   "guesses.insert"(guess)  {
