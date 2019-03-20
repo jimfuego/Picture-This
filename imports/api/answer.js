@@ -44,6 +44,12 @@ Meteor.methods({
   }
 });
 
+Meteor.methods({
+  "answer.delete"() {
+    Answer.remove({});
+  }
+});
+
 //checks if @param guess matches the answer string
 Meteor.methods({
   "answer.checkSolution"(guess)  {
