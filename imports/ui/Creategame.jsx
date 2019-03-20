@@ -1,4 +1,5 @@
 import React from "react";
+import {Meteor} from "meteor/meteor";
 import {Link} from "react-router-dom";
 import {Answer} from "../api/answer.js";
 
@@ -18,42 +19,41 @@ class Creategame extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: document.getElementById('picName').value, inSession: true});
+    this.setState({value: document.getElementById("picName").value, inSession: true});
 
   }
 
   handleSubmit(event) {
     alert("A name was submitted: " + this.state.value);
-    this.setState({value: document.getElementById('picName').value});
+    this.setState({value: document.getElementById("picName").value});
     event.preventDefault();
     Meteor.call("answer.insert",this.state.value, (err,res) => {
-    	if (err){
-    		alert("Error recording answer");
-    		console.log(err);
-    		return;
-    	}
+      if (err){
+        alert("Error recording answer");
+        console.log(err);
+        return;
+      }
 
-    	console.log("Answer inserted", res);
-    	this.props.history.push("/gamecreator")
-    	this.setState({
-    		value: ""
-    	});
-    		
+      console.log("Answer inserted", res);
+      this.props.history.push("/gamecreator")
+      this.setState({
+        value: ""
+      });
     });
 
   }
 
   render() {
     return (
-    <div className="formClass">
-       <h2 className="startgame" text-align="center">Start Game</h2>
-      <form className="gameform" onSubmit={this.handleSubmit}>
-        <label className="picturelabel">
+      <div className="formClass">
+        <h2 className="startgame" text-align="center">Start Game</h2>
+        <form className="gameform" onSubmit={this.handleSubmit}>
+          <label className="picturelabel">
           Enter Picture Name:
-          <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
-        </label>
+            <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
+          </label>
         <input type="submit" value="Submit"/>
-      </form>
+          form>
       </div>
     );
   }

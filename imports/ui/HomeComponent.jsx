@@ -6,30 +6,30 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Answer } from "../api/answer.js";
 
- class HomeComponent extends Component {
-	constructor(props) {
+class HomeComponent extends Component {
+  constructor(props) {
     super(props);
-    
+
     this.state={component : (<div><h1 className="text-center">Picture-This</h1>
-        <p className="text-center-new">Fun SFW picture guessing game </p></div>)}
+      <p className="text-center-new">Fun SFW picture guessing game </p></div>)}
 
   }
 
 
 
-  
 
 
-	render() {
-		console.log(this.props.answer);
-		return (
-			<div>
-				{Meteor.userId()? (this.props.answer? (<Redirect to="/otherusers"/>) : (<Redirect to="/creategame"/>)): this.state.component}
+
+  render() {
+    console.log(this.props.answer);
+    return (
+      <div>
+        {Meteor.userId()? (this.props.answer? (<Redirect to="/otherusers"/>) : (<Redirect to="/creategame"/>)): this.state.component}
 
 
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 
 
 
@@ -39,7 +39,7 @@ import { Answer } from "../api/answer.js";
 export default withTracker(() => {
   const handle = Meteor.subscribe("answer");
   return {
-  	answer: Answer.findOne({gameInProgress : true}),
+    answer: Answer.findOne({gameInProgress : true}),
     user: Meteor.user(),
     ready : handle.ready()
   };
