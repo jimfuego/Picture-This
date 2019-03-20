@@ -46,8 +46,6 @@ const NotFoundPage = () =>
     <div>
       {Meteor.userId() ? <Gamecreator/> :<div><h1 className="text-center">Picture-This</h1>
         <p className="text-center-new">Fun SFW picture guessing game </p></div>
-    
-
         }
 
     </div>
@@ -55,16 +53,27 @@ const NotFoundPage = () =>
     );
 };
     
-    /*const PlayerProfile = () =>
-      {Meteor.user() ? <PlayerProfile/> : 
-
-  */
-
-  /*const chat =() =>
-
-  */
+    /*const PlayerProfile = () =>{
+      {Meteor.user() ? <Playerprofile/> : 
+    
+    }*/
 
 class App extends Component {
+    constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
   render() {
     return (
       <Router>
@@ -85,6 +94,11 @@ class App extends Component {
       </Router>
     );
   }
+}
+
+function isLoggedIn() {
+  console.log("yes");
+  return Meteor.user() ? true : false;
 }
 
 export default withTracker(() => {

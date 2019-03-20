@@ -6,10 +6,10 @@ import { check } from "meteor/check";
 export const New_User = new Mongo.Collection("new_user");
 
 // if (Meteor.isServer) {
-//
-//
+
+
 //   Meteor.publish("new_user", function guessesPublish() {
-//     return New_User
+//     return new_user
 //       .find({}, {
 //         // FIXME: don't limit or sort... maybe sort
 //         limit: 10,
@@ -21,7 +21,7 @@ export const New_User = new Mongo.Collection("new_user");
 // }
 
 Meteor.methods({
-  "users.insert"(user)  {
+  "new_user.insert"(user)  {
     check(user, String);
 
     // Make sure the user is logged in before inserting a task
@@ -29,7 +29,7 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    New_User.insert({
+    Users.insert({
       userName : user.userName,
       password: user.password,
       gamesPlayed: 0,

@@ -18,7 +18,14 @@ class Creategame extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value, inSession: true});
+    this.setState({value: document.getElementById('picName').value, inSession: true});
+
+  }
+
+  handleSubmit(event) {
+    alert("A name was submitted: " + this.state.value);
+    this.setState({value: document.getElementById('picName').value});
+    event.preventDefault();
     Meteor.call("answer.insert",this.state.value, (err,res) => {
     	if (err){
     		alert("Error recording answer");
@@ -32,11 +39,6 @@ class Creategame extends React.Component {
     	});
     		
     });
-  }
-
-  handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
-    event.preventDefault();
 
   }
 
@@ -47,7 +49,7 @@ class Creategame extends React.Component {
       <form className="gameform" onSubmit={this.handleSubmit}>
         <label className="picturelabel">
           Enter Picture Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
         </label>
         <Link type="submit" to="/gamecreator" value="Submit">Submit</Link>
       </form>
