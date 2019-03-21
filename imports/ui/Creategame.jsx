@@ -24,8 +24,6 @@ class Creategame extends React.Component {
   }
 
   handleSubmit(event) {
-
-    alert("A name was submitted: " + this.state.value);
     this.setState({value: document.getElementById('picName').value});
     event.preventDefault();
     Meteor.call("answer.checkInProgress", (err, res) => {

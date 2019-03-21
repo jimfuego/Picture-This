@@ -23,14 +23,8 @@ class Otherusers extends Component {
   }
 
   renderMessages() {
-    /*return this.props.messages.map(m =>
-      <div className="card" key={m._id}>{m.owner} : {m.message}</div>);*/
-      var currentData = this.props.messages;
-      if(currentData[0] && currentData[0].hasOwnProperty("winner") && !(currentData[0].hasOwnProperty("checkInProgress"))){
-        
-        return (<Redirect to={"/winner"} />);
-        
-      }
+     this.props.messages.map(m =>
+      <div className="card" key={m._id}>{m.owner} : {m.message}</div>);
   }
 
   onChange(evt) {
@@ -38,11 +32,14 @@ class Otherusers extends Component {
     this.setState({
       message: evt.target.value
     });
+
+
+
   }
 
   onKey(evt) {
     if (evt.key === "Enter") {
-
+      var currentData=this.state.message;
       Meteor.call("messages.insert",
         this.state.message,
         (err, res) => {
@@ -56,9 +53,31 @@ class Otherusers extends Component {
           this.setState({
             message: ""
           });
-        });
 
+        Meteor.call("answer.checkSolution", currentData, (err,res)=> {
+          if (err) {
+            alert("Error checking solution");
+            console.log(err);
+            return;
+          }
 
+          else if (res==false) {
+            alert("Wrong Answer-Try Again");
+          
+          }
+
+        else if (res==true){
+          alert("You are the winner");
+         
+        }
+
+     });
+
+ });
+
+        this.props.history.push("/creategame");
+
+      
 
       // // Messages.insert(
       // //   {

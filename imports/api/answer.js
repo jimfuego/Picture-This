@@ -58,18 +58,8 @@ Meteor.methods({
     if (! this.userId) {
     throw new Meteor.Error("not-authorized");
     }
-      var checkMatch = Answer.findOne({winner: { $exists: false },answer:guess}, { sort: { createdAt: -1 }, limit: 1 });
-
-    if (checkMatch) {
-      Answer.update({
-         _id : checkMatch._id },
-        {$set: {"winner": this.userId,
-               gameInProgress : false
-              }
-      });
-      Answer.remove({
-            answer: guess
-      });
+    if (Answer.findOne({answer : guess}) != undefined) {
+      Answer.remove({});
       // Answer.update({}, {
       //   $set:{
       //     answer: " ",
@@ -78,16 +68,18 @@ Meteor.methods({
       //   }
       // });
       //game over - winner
-    return this.userId;
+      return true;
     }
+    else{
     //continue game
     return false;
+  }
   }
 });
 
 //returns true if a game is in progress
 Meteor.methods({
   "answer.checkInProgress"() {
-    return (Answer.findOne({gameInProgress : true}) == true);
+    return (Answer.findOne({gameInProgress : true})!=undefined);
   }
 });

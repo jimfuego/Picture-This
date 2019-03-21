@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";
-import { BrowserRouter as Router, Route, Switch, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 
 
