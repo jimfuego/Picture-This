@@ -6,8 +6,6 @@ import { check } from "meteor/check";
 export const New_User = new Mongo.Collection("new_user");
 
 // if (Meteor.isServer) {
-
-
 //   Meteor.publish("new_user", function guessesPublish() {
 //     return new_user
 //       .find({}, {

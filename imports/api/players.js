@@ -14,12 +14,10 @@ if (Meteor.isServer) {
 Meteor.methods({
   "players.newPlayer"(player)  {
     check(player, String);
-
     // Make sure the user is logged in before inserting a task
     if (! this.userId) {
       throw new Meteor.Error("not-authorized");
     }
-
     Players.insert({
       player : Meteor.user().username
     });

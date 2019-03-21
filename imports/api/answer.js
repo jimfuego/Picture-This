@@ -60,13 +60,6 @@ Meteor.methods({
     }
     if (Answer.findOne({answer : guess}) != undefined) {
       Answer.remove({});
-      // Answer.update({}, {
-      //   $set:{
-      //     answer: " ",
-      //     player : " ",
-      //     gameInProgress : false
-      //   }
-      // });
       //game over - winner
       return true;
     }
