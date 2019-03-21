@@ -2,7 +2,8 @@ import React from "react";
 import {Meteor} from "meteor/meteor";
 import {Link} from "react-router-dom";
 import {Answer} from "../api/answer.js";
-
+import {withRouter} from 'react-router-dom';
+import {Meteor} from "meteor/meteor";
 //import PropTypes from "prop-types";
 //import { Meteor } from "meteor/meteor";
 
@@ -13,7 +14,6 @@ class Creategame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: " ", inSession: false};
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -27,36 +27,48 @@ class Creategame extends React.Component {
     alert("A name was submitted: " + this.state.value);
     this.setState({value: document.getElementById("picName").value});
     event.preventDefault();
-    Meteor.call("answer.insert",this.state.value, (err,res) => {
-      if (err){
-        alert("Error recording answer");
+    Meteor.call("answer.checkInProgress", (err, res) => {
+      if(err){
+        alert("alert Creategame.jsx.handleSubmit");
         console.log(err);
         return;
       }
-
-      console.log("Answer inserted", res);
-      this.props.history.push("/gamecreator")
-      this.setState({
-        value: ""
-      });
+      else if (res === true){
+        alert("Game already in progress, rerouting to game lobby");
+        this.props.history.push("/otherusers");
+      }
+      else if (res === false){
+        Meteor.call("answer.insert", this.state.value, (err,res) => {
+          if (err){
+            alert("Error recording answer");
+            console.log(err);
+            return;
+          }
+          console.log("Answer inserted", res);
+          this.props.history.push("/drawer");
+          this.setState({
+            value: ""
+          });
+        });
+      }
     });
-
   }
+
 
   render() {
     return (
       <div className="formClass">
-        <h2 className="startgame" text-align="center">Start Game</h2>
-        <form className="gameform" onSubmit={this.handleSubmit}>
-          <label className="picturelabel">
-          Enter Picture Name:
-            <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
-          </label>
-        <input type="submit" value="Submit"/>
-          form>
+      <h2 className="startgame" text-align="center">Start Game</h2>
+      <form className="gameform" onSubmit={this.handleSubmit}>
+      <label className="picturelabel">
+      Enter Picture Name:
+      <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
+      </label>
+      <input type="submit" value="Submit"/>
+      </form>
       </div>
-    );
+      );
   }
 }
 
-export default Creategame;
+export default withRouter(Creategame);

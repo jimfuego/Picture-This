@@ -22,6 +22,7 @@ Meteor.methods({
     }
 
     Canvas.remove({});
+    console.log(canvasSave);
     Canvas.insert({
       canvasState : canvasSave
     });

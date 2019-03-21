@@ -1,10 +1,15 @@
-import React, { Component } from "react";
+import React, { Component,Redirect } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 
 import { withTracker } from "meteor/react-meteor-data";
 import { Messages } from "../api/messages.js";
-//import Gamecreator from "./Gamecreator.jsx";
+import {Canvas} from "../api/canvas.js";
+import { Answer } from "../api/answer.js";
+//import { Creategame } from "./Creategame.js";
+
+
+
 
 
 class Otherusers extends Component {
@@ -13,11 +18,12 @@ class Otherusers extends Component {
 
     this.state = {
       message: ""
+
     };
   }
 
   renderMessages() {
-    return this.props.messages.map(m =>
+    this.props.messages.map(m =>
       <div className="card" key={m._id}>{m.owner} : {m.message}</div>);
   }
 
@@ -26,11 +32,14 @@ class Otherusers extends Component {
     this.setState({
       message: evt.target.value
     });
+
+
+
   }
 
   onKey(evt) {
     if (evt.key === "Enter") {
-
+      var currentData=this.state.message;
       Meteor.call("messages.insert",
         this.state.message,
         (err, res) => {
@@ -44,7 +53,27 @@ class Otherusers extends Component {
           this.setState({
             message: ""
           });
+
+          Meteor.call("answer.checkSolution", currentData, (err,res)=> {
+            if (err) {
+              alert("Error checking solution");
+              console.log(err);
+              return;
+            }
+
+            else if (res==false) {
+              alert("Wrong Answer-Try Again");
+
+            }
+
+            else if (res==true){
+              alert("You are the winner");
+            }
+          });
         });
+
+      this.props.history.push("/creategame");
+
 
 
       // // Messages.insert(
@@ -66,6 +95,19 @@ class Otherusers extends Component {
       // //   }
       // );
     }
+
+    /*     Meteor.call("answer.update",
+      {'id':this.props.currentgame[0]._id,"answer":this.state.answer},
+      (err, res) => {
+        if (err) {
+          alert("There was error inserting check the console");
+          console.log(err);
+          return;
+        }
+        this.setState({
+          message: ""
+        });
+      });*/
   }
 
   render() {
@@ -86,35 +128,29 @@ class Otherusers extends Component {
             onKeyPress={this.onKey.bind(this)}
           />
         </label>
-        <Gamecreator/>
+        {console.log(this.props.canvas)}
+        {this.props.canvas[0]?
+          <img src={this.props.canvas[0].canvasState} alt='from canvas'/>:
+          <div></div>}
       </div>
     );
   }
 }
 
 Otherusers.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.object).isRequired
+  messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  canvas: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default withTracker(() => {
   const handle = Meteor.subscribe("messages");
+  const c = Meteor.subscribe("canvas");
+
   return {
     messages: Messages.find({}).fetch(),
     user: Meteor.user(),
-    ready : handle.ready()
+    ready : handle.ready() || c.ready(),
+    canvas: Canvas.find({}).fetch()
+
   };
 })(Otherusers);
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,11 +3,14 @@ import { Meteor } from "meteor/meteor";
 import Otherusers from "./Otherusers.jsx";
 import NavBar from "./NavBar.jsx";
 import Creategame from "./Creategame.jsx";
-import Admin from "./Admin.jsx";
+//import Admin from "./Admin.jsx";
+import Canvas from "./Canvas.jsx";
 import {Redirect} from "react-router-dom";
-
-
+import Drawer from "./Drawer.jsx";
+import Winner from "./Winner.jsx";
 import { withTracker } from "meteor/react-meteor-data";
+
+
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -20,14 +23,14 @@ import HomeComponent from "./HomeComponent.jsx"
     <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est saepe, ea minus quae ab nam impedit eaque. Adipisci expedita sit repudiandae, enim sapiente ipsam voluptas obcaecati veritatis, sunt eius nemo.</div>
     </div>;*/
 
-    const NotFoundPage = () =>
-    <div>
+const NotFoundPage = () =>
+  <div>
     <h2>Page not found</h2>
     <div>We should call Suhas 🤷‍♀️</div>
-    </div>;
+  </div>;
 
-  //if game is in progress then go to game creator page else go to other users page. Remove home compnent
-  const CreateGame = () => {
+//if game is in progress then go to game creator page else go to other users page. Remove home compnent
+/*const CreateGame = () => {
     return(
       <div>
       {Meteor.call("answer.checkInProgress",null, (err,res) => {
@@ -38,17 +41,17 @@ import HomeComponent from "./HomeComponent.jsx"
         }
 
         if(res==true){
-          return <Admin/>;
+          return <Drawer/>;
         }
       })
 
-    }  
+    }
     </div>
     );
-  };
+  };*/
 
 //Should route to player profile page instead of not found page
-const AdminPage= () =>{
+/*const AdminPage= () =>{
   return (
     <div>
     {Meteor.call("answer.checkSolution",guess, (err,res) => {
@@ -63,20 +66,20 @@ const AdminPage= () =>{
         }
       })
 
-  }  
+  }
   </div>
 
   );
-};
+};*/
 
 
-//should go to profile page if winning condition is met  
-const OtherUsers = (guess) => {
+//should go to profile page if winning condition is met
+/*const OtherUsers = (guess) => {
   return(
     <div>
     {Meteor.call("answer.checkSolution",guess, (err,res) => {
       if (err){
-        alert("Error recording answer");
+        alert("Solution is not correct");
         console.log(err);
         return;
       }
@@ -86,73 +89,76 @@ const OtherUsers = (guess) => {
         }
       })
 
-  }  
+  }
   </div>
   );
 
-};
+};*/
 
 
-    //should route to create game when a game is finished 
-    /*const PlayerProfile = () =>{
-      {Meteor.user() ? <Playerprofile/> : 
-    
+//should route to create game when a game is finished
+/*const PlayerProfile = () =>{
+      {Meteor.user() ? <Playerprofile/> :
+
       }*/
 
-      class App extends Component {
-        constructor(props) {
-          super(props);
-          this.state = {value: ''};
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ""};
 
-          this.handleChange = this.handleChange.bind(this);
-          this.handleSubmit = this.handleSubmit.bind(this);
-        }
-        handleChange(event) {
-          this.setState({value: event.target.value});
-        }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
 
-        handleSubmit(event) {
-          alert('A name was submitted: ' + this.state.value);
-          event.preventDefault();
-        }
-        render() {
-          return (
-            <Router>
-            <div>
-            <NavBar />
-            <Switch>
+  handleSubmit(event) {
+    alert("A name was submitted: " + this.state.value);
+    event.preventDefault();
+  }
+  //missing profile page
+  render() {
+    return (
+      <Router>
+        <div>
+          <NavBar />
+          <Switch>
             <Route exact path="/" component={HomeComponent} />
             <Route exact path="/creategame" component={Creategame}/>
-            <Route exact path="/admin" component={AdminPage}/>
+            <Route exact path="/canvas" component={Canvas}/>
+            <Route exact path="/drawer" component={Drawer}/>
             <Route exact path="/otherusers" component={Otherusers}/>
+            <Route exact path="/winner" component={Winner}/>
             <Route component={NotFoundPage} />
-            </Switch>
-            <br />
-            <div></div>
+          </Switch>
+          <br />
+          <div></div>
 
 
-            </div>
-            </Router>
-            );
-        }
-      }
+        </div>
+      </Router>
+    );
+  }
+}
 
-      function isLoggedIn() {
+/*function isLoggedIn() {
         console.log("yes");
         return Meteor.user() ? true : false;
-      }
+      }*/
 
-      export default withTracker(() => {
-        return {
-          user: Meteor.userId()
-        };
-      })(App);
+export default withTracker(() => {
+  return {
+    user: Meteor.userId()
+  };
+})(App);
 
 /*const LobbyPage = () => {
 return(
 
 <div>
-      {Meteor.user() ? 
+      {Meteor.user() ?
           <div className="bg-overlay row justify-content-center">
 
 
@@ -193,5 +199,3 @@ return(
 </div>
 );
 };*/
-
-

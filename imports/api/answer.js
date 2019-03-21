@@ -1,3 +1,4 @@
+
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -54,6 +55,9 @@ Meteor.methods({
 Meteor.methods({
   "answer.checkSolution"(guess)  {
     check(guess, String);
+    if (! this.userId) {
+      throw new Meteor.Error("not-authorized");
+    }
     if (Answer.findOne({answer : guess}) != undefined) {
       Answer.remove({});
       // Answer.update({}, {
@@ -66,14 +70,16 @@ Meteor.methods({
       //game over - winner
       return true;
     }
+    else{
     //continue game
-    return false;
+      return false;
+    }
   }
 });
 
 //returns true if a game is in progress
 Meteor.methods({
   "answer.checkInProgress"() {
-    return (Answer.findOne({gameInProgress : true}) == true);
+    return (Answer.findOne({gameInProgress : true})!=undefined);
   }
 });
