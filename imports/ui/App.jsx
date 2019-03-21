@@ -7,9 +7,10 @@ import Creategame from "./Creategame.jsx";
 import Canvas from "./Canvas.jsx";
 import {Redirect} from "react-router-dom";
 import Drawer from "./Drawer.jsx";
-
-
+import Winner from "./Winner.jsx";
 import { withTracker } from "meteor/react-meteor-data";
+
+
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -129,6 +130,7 @@ import HomeComponent from "./HomeComponent.jsx"
             <Route exact path="/canvas" component={Canvas}/>
             <Route exact path="/drawer" component={Drawer}/>
             <Route exact path="/otherusers" component={Otherusers}/>
+            <Route exact path="/winner" component={Winner}/>
             <Route component={NotFoundPage} />
             </Switch>
             <br />

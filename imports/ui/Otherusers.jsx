@@ -1,10 +1,14 @@
-import React, { Component } from "react";
+import React, { Component,Redirect } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 
 import { withTracker } from "meteor/react-meteor-data";
 import { Messages } from "../api/messages.js";
 import {Canvas} from "../api/canvas.js";
+import { Answer } from "../api/answer.js";
+//import { Creategame } from "./Creategame.js";
+
+
 
 
 
@@ -19,8 +23,16 @@ class Otherusers extends Component {
   }
 
   renderMessages() {
-    return this.props.messages.map(m =>
-      <div className="card" key={m._id}>{m.owner} : {m.message}</div>);
+    /*return this.props.messages.map(m =>
+      <div className="card" key={m._id}>{m.owner} : {m.message}</div>);*/
+      var currentData = this.props.messages;
+      if(currentData[0] && currentData[0].hasOwnProperty("winner") && !(currentData[0].hasOwnProperty("checkInProgress"))){
+        
+        return (<Redirect to={{
+          pathname: "/winner/"+currentData[0].winner
+        }} />);
+        
+      }
   }
 
   onChange(evt) {
@@ -49,6 +61,7 @@ class Otherusers extends Component {
         });
 
 
+
       // // Messages.insert(
       // //   {
       // //     message: this.state.message,
@@ -68,6 +81,19 @@ class Otherusers extends Component {
       // //   }
       // );
     }
+
+     /*     Meteor.call("answer.update",
+      {'id':this.props.currentgame[0]._id,"answer":this.state.answer},
+      (err, res) => {
+        if (err) {
+          alert("There was error inserting check the console");
+          console.log(err);
+          return;
+        } 
+        this.setState({
+          message: ""
+        });
+      });*/
   }
 
   render() {

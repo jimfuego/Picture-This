@@ -55,8 +55,21 @@ Meteor.methods({
 Meteor.methods({
   "answer.checkSolution"(guess)  {
     check(guess, String);
-    if (Answer.findOne({answer : guess}) != undefined) {
-      Answer.remove({});
+    if (! this.userId) {
+    throw new Meteor.Error("not-authorized");
+    }
+      var checkMatch = Answer.findOne({winner: { $exists: false },answer:guess}, { sort: { createdAt: -1 }, limit: 1 });
+
+    if (checkMatch) {
+      Answer.update({
+         _id : checkMatch._id },
+        {$set: {"winner": this.userId,
+               gameInProgress : false
+              }
+      });
+      Answer.remove({
+            answer: guess
+      });
       // Answer.update({}, {
       //   $set:{
       //     answer: " ",
@@ -65,7 +78,7 @@ Meteor.methods({
       //   }
       // });
       //game over - winner
-      return true;
+    return this.userId;
     }
     //continue game
     return false;
