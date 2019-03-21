@@ -10,3 +10,18 @@ if (Meteor.isServer) {
     return Winner.find({});
   });
 }
+
+Meteor.methods({
+  "winner.setWinner"(winner)  {
+    check(winner, String);
+    Winner.insert({
+      winner: winner
+    });
+  }
+});
+
+Meteor.methods({
+  "winner.deleteWinner"()  {
+    Winner.remove({});
+  }
+});
