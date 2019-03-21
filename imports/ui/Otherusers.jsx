@@ -28,9 +28,7 @@ class Otherusers extends Component {
       var currentData = this.props.messages;
       if(currentData[0] && currentData[0].hasOwnProperty("winner") && !(currentData[0].hasOwnProperty("checkInProgress"))){
         
-        return (<Redirect to={{
-          pathname: "/winner/"+currentData[0].winner
-        }} />);
+        return (<Redirect to={"/winner"} />);
         
       }
   }

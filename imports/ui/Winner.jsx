@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component,Redirect } from "react";
 import {Link} from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import {Answer} from "../api/answer.js";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
+import Creategame from "./Creategame.jsx";
 
 
 
@@ -13,8 +14,27 @@ class Winner extends Component{
     super(props);
 
  this.winnerid = this.props.match.params.id;
+    
+
 
  }
+state = {
+	redirect: false
+  }
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
+  renderRedirect = () => {
+    if (this.winnerid) {
+       <Redirect to="/creategame" />
+    }
+    else {
+    	<Redirect to="/otherusers" />
+
+    }
+  }
 
  renderGames() {
     return this.props.users.map(m =>
@@ -41,12 +61,15 @@ class Winner extends Component{
 
 //check this method
   render() {
-      if(!(this.props.currentgame[0].hasOwnProperty("checkInProgress"))){
-    this.finishGame();}
+      if(this.props.currentgame[0]){
+    		this.finishGame();
+	}
     return (
       <div>
-        <h2>Winner</h2>
-        <div className="users">{this.renderGames()} </div>   
+        <h2 className="win" align-text="center">Winner</h2>
+        <div className="users">{this.renderGames()} </div>
+                {this.renderRedirect()}
+          <button onClick={this.setRedirect} className="btn btn-info">Create new game</button>
       </div>
     );
   }
