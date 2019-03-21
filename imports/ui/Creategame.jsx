@@ -2,8 +2,7 @@ import React from "react";
 import {Meteor} from "meteor/meteor";
 import {Link} from "react-router-dom";
 import {Answer} from "../api/answer.js";
-import {withRouter} from 'react-router-dom';
-import {Meteor} from "meteor/meteor";
+import {withRouter} from "react-router-dom";
 //import PropTypes from "prop-types";
 //import { Meteor } from "meteor/meteor";
 
