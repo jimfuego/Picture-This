@@ -3,8 +3,10 @@ import { Meteor } from "meteor/meteor";
 import Otherusers from "./Otherusers.jsx";
 import NavBar from "./NavBar.jsx";
 import Creategame from "./Creategame.jsx";
-import Admin from "./Admin.jsx";
+//import Admin from "./Admin.jsx";
+import Canvas from "./Canvas.jsx";
 import {Redirect} from "react-router-dom";
+import Drawer from "./Drawer.jsx";
 
 
 import { withTracker } from "meteor/react-meteor-data";
@@ -27,7 +29,7 @@ import HomeComponent from "./HomeComponent.jsx"
     </div>;
 
   //if game is in progress then go to game creator page else go to other users page. Remove home compnent
-  const CreateGame = () => {
+  /*const CreateGame = () => {
     return(
       <div>
       {Meteor.call("answer.checkInProgress",null, (err,res) => {
@@ -38,17 +40,17 @@ import HomeComponent from "./HomeComponent.jsx"
         }
 
         if(res==true){
-          return <Admin/>;
+          return <Drawer/>;
         }
       })
 
     }  
     </div>
     );
-  };
+  };*/
 
 //Should route to player profile page instead of not found page
-const AdminPage= () =>{
+/*const AdminPage= () =>{
   return (
     <div>
     {Meteor.call("answer.checkSolution",guess, (err,res) => {
@@ -67,16 +69,16 @@ const AdminPage= () =>{
   </div>
 
   );
-};
+};*/
 
 
 //should go to profile page if winning condition is met  
-const OtherUsers = (guess) => {
+/*const OtherUsers = (guess) => {
   return(
     <div>
     {Meteor.call("answer.checkSolution",guess, (err,res) => {
       if (err){
-        alert("Error recording answer");
+        alert("Solution is not correct");
         console.log(err);
         return;
       }
@@ -90,7 +92,7 @@ const OtherUsers = (guess) => {
   </div>
   );
 
-};
+};*/
 
 
     //should route to create game when a game is finished 
@@ -115,6 +117,7 @@ const OtherUsers = (guess) => {
           alert('A name was submitted: ' + this.state.value);
           event.preventDefault();
         }
+        //missing profile page
         render() {
           return (
             <Router>
@@ -123,7 +126,8 @@ const OtherUsers = (guess) => {
             <Switch>
             <Route exact path="/" component={HomeComponent} />
             <Route exact path="/creategame" component={Creategame}/>
-            <Route exact path="/admin" component={AdminPage}/>
+            <Route exact path="/canvas" component={Canvas}/>
+            <Route exact path="/drawer" component={Drawer}/>
             <Route exact path="/otherusers" component={Otherusers}/>
             <Route component={NotFoundPage} />
             </Switch>
@@ -137,10 +141,10 @@ const OtherUsers = (guess) => {
         }
       }
 
-      function isLoggedIn() {
+      /*function isLoggedIn() {
         console.log("yes");
         return Meteor.user() ? true : false;
-      }
+      }*/
 
       export default withTracker(() => {
         return {

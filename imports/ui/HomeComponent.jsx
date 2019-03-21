@@ -15,24 +15,14 @@ import { Answer } from "../api/answer.js";
 
   }
 
-
-
-  
-
-
 	render() {
 		console.log(this.props.answer);
 		return (
 			<div>
 				{Meteor.userId()? (this.props.answer? (<Redirect to="/otherusers"/>) : (<Redirect to="/creategame"/>)): this.state.component}
-
-
 			</div>
 		);
 	}
-
-
-
 }
 
 

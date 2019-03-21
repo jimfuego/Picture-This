@@ -3,7 +3,7 @@ import React, { Component } from 'react';
         import Pusher from 'pusher-js';
 
 
-    class Admin extends Component {
+    class Canvas extends Component {
       constructor(props) {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
@@ -65,20 +65,15 @@ import React, { Component } from 'react';
       }
 
       async sendPaintData() {
-        const body = {
-          line: this.line,
-          userId: this.userId,
-        };
-        // We use the native fetch API to make requests to the server
-        const req = await fetch('http://localhost:4000/paint', {
-          method: 'post',
-          body: JSON.stringify(body),
-          headers: {
-            'content-type': 'application/json',
-          },
-        });
-        const res = await req.json();
-        this.line = [];
+        console.log(this.canvas.toDataURL('image/png'))
+        Meteor.call("canvas.saveCanvas", this.canvas.toDataURL('image/png'), (err,res) => {
+            if (err){
+        alert("Error recording canvas");
+        console.log(err);
+        return;
+      }
+      console.log("Canvas inserted", res);   
+    });
       }
 
       componentDidMount() {
@@ -102,7 +97,7 @@ import React, { Component } from 'react';
 
       render() {
         return (
-          <canvas
+          <canvas id="drawcanvas"
           // We use the ref attribute to get direct access to the canvas element. 
             ref={(ref) => (this.canvas = ref)}
             style={{ background: 'black' }}
@@ -114,4 +109,4 @@ import React, { Component } from 'react';
         );
       }
     }
-    export default Admin;
+    export default Canvas;

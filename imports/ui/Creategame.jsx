@@ -1,7 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Answer} from "../api/answer.js";
-
+import {
+ BrowserRouter as Router,
+ Route
+} from 'react-router-dom';
+import {Meteor} from "meteor/meteor";
 //import PropTypes from "prop-types";
 //import { Meteor } from "meteor/meteor";
 
@@ -23,24 +27,35 @@ class Creategame extends React.Component {
   }
 
   handleSubmit(event) {
+
     alert("A name was submitted: " + this.state.value);
     this.setState({value: document.getElementById('picName').value});
     event.preventDefault();
-    Meteor.call("answer.insert",this.state.value, (err,res) => {
+    if(Meteor.call("answer.checkInProgress", (err, res) => {
+  	if(err){
+  		alert("alert Creategame.jsx.handleSubmit");
+  		console.log(err);
+    		return;
+    	}
+    })){
+    	alert("Game already in progress, rerouting to game lobby");
+    	this.props.history.push("/otherusers");
+    }
+    else{
+    	Meteor.call("answer.insert",this.state.value, (err,res) => {
     	if (err){
     		alert("Error recording answer");
     		console.log(err);
     		return;
     	}
-
     	console.log("Answer inserted", res);
-    	this.props.history.push("/gamecreator")
+    	this.props.history.push("/drawer");
     	this.setState({
     		value: ""
     	});
     		
     });
-
+	}
   }
 
   render() {
