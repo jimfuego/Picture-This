@@ -2,12 +2,7 @@ import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 
-
 export const Drawgame = new Mongo.Collection("drawgame");
-
-
-
-
 
 Meteor.methods({
   "drawgame.insert"(drawgame)  {
@@ -27,9 +22,7 @@ Meteor.methods({
     return newdrawgame;
   },
   "drawgame.update"(drawgame)  {
-
     check(drawgame.answer, String);
-
     // Make sure the user is logged in before inserting a task
     if (! this.userId) {
       throw new Meteor.Error("not-authorized");

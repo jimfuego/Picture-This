@@ -7,7 +7,7 @@ import {withRouter} from "react-router-dom";
 class Creategame extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: "", inSession: false};
+    this.state = {value: "", inSession: false };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -26,25 +26,38 @@ class Creategame extends React.Component {
         console.log(err);
         return;
       }
+      //if game in progress, re-route
       else if (res === true){
         alert("Game already in progress, rerouting to game lobby");
         this.props.history.push("/otherusers");
       }
       else if (res === false){
-        //delete lingering answer from last game
+        //delete canvas from last game
+        Meteor.call("canvas.deleteCanvas", (err) => {
+          if(err){
+            console.log("failed to delete canvas", err);
+          }
+        });
+        //delete answer from last game
         Meteor.call("answer.delete", (err) => {
-          console.log("createGame.jsx.handleSubmit failed to delete prev answer", err);
+          if (err){
+            console.log("createGame.jsx.handleSubmit failed to delete prev answer", err);
+          }
         });
+        //delete winner from last game
         Meteor.call("winner.deleteWinner", (err) => {
-          console.log("createGame.jsx.handleSubmit failed to delete prev winner", err);
+          if(!err){
+            console.log("createGame.jsx.handleSubmit failed to delete prev winner", err);
+          }
         });
+        //insert answer for this game
         Meteor.call("answer.insert", this.state.value, (err,res) => {
           if (err){
             alert("Error recording answer");
             console.log(err);
             return;
           }
-          console.log("Answer inserted", res);
+          console.log("Answer inserted", this.state.value);
           this.props.history.push("/drawer");
           this.setState({
             value: ""

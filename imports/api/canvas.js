@@ -15,14 +15,12 @@ if (Meteor.isServer) {
 Meteor.methods({
   "canvas.saveCanvas"(canvasSave)  {
     check(canvasSave, String);
-
     // Make sure the user is logged in before inserting a task
     if (! this.userId) {
       throw new Meteor.Error("not-authorized");
     }
-
     Canvas.remove({});
-    console.log(canvasSave);
+    // console.log(canvasSave);
     Canvas.insert({
       canvasState : canvasSave
     });

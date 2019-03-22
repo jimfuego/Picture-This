@@ -17,7 +17,7 @@ class Drawer extends React.Component {
     this.state = {
       value: "",
       answer: "",
-      winner:false
+      winner:""
     };
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     // this.answer = {value: ''};
@@ -33,14 +33,14 @@ class Drawer extends React.Component {
 
   saveCanvas() {
     const canvasSave = document.getElementById("drawcanvas");
-    const d = canvasSave.toDataURL('image/png');
-    Meteor.call("canvas.saveCanvas", d, (err,res) => {
+    const d = canvasSave.toDataURL("image/png");
+    Meteor.call("canvas.saveCanvas", d, (err) => {
       if (err){
         alert("Error recording canvas");
         console.log(err);
         return;
       }
-      console.log("Canvas inserted", res);
+      // console.log("Canvas inserted", res);
     });
 
     /*const w = window.open('about:blank', 'image from canvas');
@@ -115,15 +115,19 @@ class Drawer extends React.Component {
 
   componentDidUpdate(){
     console.log("state.winner", this.state.winner);
-    console.log("props.winner", this.props.winner);
+    Meteor.call("answer.checkInProgress", (err, res) => {
+      if (res){
+        //do nothing
+        console.log("Game still in progress", res);
+      }
+      else{
+        //game is over
+        alert("Game over... nice drawing.");
+        this.props.history.push("/creategame");
+      }
+    });
+  }
 
-    if(this.state.winner){
-      //alert(this.props.winner, ", you are the winner!");
-      this.props.history.push("/creategame");
-
-
-    }
-}
   render() {
     return (
       <div>
@@ -149,14 +153,13 @@ class Drawer extends React.Component {
 export default withRouter(withTracker(() => {
   // const handle = Meteor.subscribe("messages");
   const subwinner=Meteor.subscribe("winner");
+  const answer=Meteor.subscribe("answer");
   // const c = Meteor.subscribe("canvas");
   // const subanswer=Meteor.subscribe("answer");
   return {
-    //messages: Messages.find({}).fetch(),
     user: Meteor.user(),
-    ready : subwinner.ready(),
-    //canvas: Canvas.find({}).fetch(),
-    //answer: Answer.find({}).fetch(),
+    ready : answer.ready(),
     winner:  Winner.find({}).fetch()
+    // inProgress: answer.findOne({inProgress:false}).fetch()
   };
 })(Drawer));

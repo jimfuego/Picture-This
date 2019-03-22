@@ -43,35 +43,37 @@ class Otherusers extends Component {
             console.log(err);
             return;
           }
-
           console.log("Message inserted", res);
-
-
           Meteor.call("answer.checkSolution", this.state.message, (err,res)=> {
             if (err) {
               alert("Error checking solution");
               console.log(err);
               return;
             }
-
             else if (res==false) {
               alert("Wrong Answer-Try Again");
             }
-
             else {
               Meteor.call("winner.setWinner", Meteor.user().username, (err,res) => {
-                alert("you are the winner brah");
-                Meteor.call("answer.delete", (err,res) => {
-                  if (err) {
-                    alert("Error deleting answer");
-                    console.log(err);
-                    return;
+                Meteor.call("answer.endGame", (err, res) => {
+                  if(err){
+                    console.log("error ending game Otherusers.jsx", err);
                   }
-
                   else{
-                    console.log("Answer Deleted");
+                    //do nothing
                   }
                 });
+                alert("you are the winner brah", res);
+                // Meteor.call("answer.delete", (err) => {
+                //   if (err) {
+                //     alert("Error deleting answer");
+                //     console.log(err);
+                //     return;
+                //   }
+                //   else{
+                //     console.log("Answer Deleted");
+                //   }
+                // });
                 Meteor.call("canvas.deleteCanvas", (err) => {
                   if (err) {
                     alert("Error deleting Canvas");
@@ -84,47 +86,11 @@ class Otherusers extends Component {
                   }
                 });
                 this.props.history.push("/creategame");
-
               });
-
             }
           });
         });
-
-      //this.props.history.push("/creategame");
-
-      // // Messages.insert(
-      // //   {
-      // //     message: this.state.message,
-      // //     owner : Meteor.user().username
-      // //   },
-      // //   (err, res) => {
-      // //     if (err) {
-      // //       alert("There was error inserting check the console");
-      // //       console.log(err);
-      // //       return;
-      // //     }
-
-      // //     console.log("Message inserted", res);
-      // //     this.setState({
-      // //       message: ""
-      // //     });
-      // //   }
-      // );
     }
-
-    /*     Meteor.call("answer.update",
-      {'id':this.props.currentgame[0]._id,"answer":this.state.answer},
-      (err, res) => {
-        if (err) {
-          alert("There was error inserting check the console");
-          console.log(err);
-          return;
-        }
-        this.setState({
-          message: ""
-        });
-      });*/
   }
 
 

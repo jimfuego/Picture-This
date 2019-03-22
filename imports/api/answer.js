@@ -8,7 +8,7 @@ export const Answer = new Mongo.Collection("answer");
 
 if (Meteor.isServer) {
   Meteor.publish("answer", function guessesPublish() {
-    return Answer.find({});
+    return (Answer.findOne({gameInProgress : true}));
   });
 }
 
@@ -66,6 +66,18 @@ Meteor.methods({
     //continue game
       return false;
     }
+  }
+});
+
+Meteor.methods({
+  "answer.endGame" () {
+    Answer.update({}, {
+      $set:{
+        answer :"",
+        player : "",
+        gameInProgress : false
+      }
+    });
   }
 });
 
