@@ -1,11 +1,11 @@
-# [Picture-This]()
+# [Picture-This](https://picture-this.herokuapp.com/)
 Picture-This is a picture guessing game that allows users to guess the name of a picture drawn by game master. Game ends if a user guesses right
 
 ## Preview
 
 ![App Preview](pic_this.png) 
 
-**[View Live Preview]()**
+**[View Live Preview](https://picture-this.herokuapp.com/)**
 
 ## Tech Requirements
 * Meteor
@@ -22,7 +22,7 @@ Picture-This is a picture guessing game that allows users to guess the name of a
 
 **OR**
 
-Load the [URL]() onto your browser, 
+Load the [URL](https://picture-this.herokuapp.com/) onto your browser, 
 
 
 ## Authors
