@@ -3,7 +3,7 @@ Picture-This is a picture guessing game that allows users to guess the name of a
 
 ## Preview
 
-![App Preview]() 
+![App Preview](pic_this.png) 
 
 **[View Live Preview]()**
 
