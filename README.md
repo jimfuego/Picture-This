@@ -33,10 +33,10 @@ Load the [URL](https://picture-this.herokuapp.com/) onto your browser,
 [Web Development Spring 2019](http://johnguerra.co/classes/webDevelopment_spring_2019/)
 
 ## Video Demo
-Demo can be found [here]()
+Demo can be found [here](https://youtu.be/YcQMGsGqZ0A)
 
 ## Google Slides URL
-Slides can be found [here]()
+Slides can be found [here](https://docs.google.com/presentation/d/1F-eGBy_xNZaXKduOfpS5zAIoICZmdZDNoHRj4iw1uS8/edit?usp=sharing)
 
 ## Copyright and License
 Code released under the [MIT](https://github.com/facebook/react/blob/master/LICENSE) license.
