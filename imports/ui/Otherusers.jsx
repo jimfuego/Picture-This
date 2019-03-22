@@ -8,10 +8,6 @@ import {Canvas} from "../api/canvas.js";
 import { Answer } from "../api/answer.js";
 //import { Creategame } from "./Creategame.js";
 
-
-
-
-
 class Otherusers extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +35,6 @@ class Otherusers extends Component {
 
   onKey(evt) {
     if (evt.key === "Enter") {
-      var currentData=this.state.message;
       Meteor.call("messages.insert",
         this.state.message,
         (err, res) => {
@@ -50,11 +45,9 @@ class Otherusers extends Component {
           }
 
           console.log("Message inserted", res);
-          this.setState({
-            message: ""
-          });
 
-          Meteor.call("answer.checkSolution", currentData, (err,res)=> {
+
+          Meteor.call("answer.checkSolution", this.state.message, (err,res)=> {
             if (err) {
               alert("Error checking solution");
               console.log(err);
@@ -66,16 +59,14 @@ class Otherusers extends Component {
             }
 
             else {
-              
-              Meteor.call("winner.setWinner", Meteor.user.username(), (err,res) => {
-                  alert(res, ", is the winner!");
-
-                  Meteor.call("answer.deleteAnswer", (err) => {
+              Meteor.call("winner.setWinner", Meteor.user().username, (err,res) => {
+                  alert("you are the winner brah");
+                  Meteor.call("answer.delete", (err,res) => {
                       if (err) {
                       alert("Error deleting answer");
                     console.log(err);
                       return;
-                    } 
+                    }
 
                     else{
                       console.log("Answer Deleted");
@@ -86,15 +77,16 @@ class Otherusers extends Component {
                       alert("Error deleting Canvas");
                     console.log(err);
                       return;
-                    } 
+                    }
 
                     else{
                       console.log("Canvas Deleted");
                     }
                   });
+                  this.props.history.push("/creategame");
 
               });
-              this.props.history.push("/creategame");
+
             }
           });
         });
@@ -159,7 +151,7 @@ class Otherusers extends Component {
         </label>
         {console.log(this.props.canvas)}
         {this.props.canvas[0]?
-          <img src={this.props.canvas[0].canvasState} alt='from canvas'/>:
+          <img id="bloom" src={this.props.canvas[0].canvasState} alt='from canvas'/>:
           <div></div>}
       </div>
     );
@@ -176,8 +168,6 @@ export default withTracker(() => {
   const c = Meteor.subscribe("canvas");
   const subwinner=Meteor.subscribe("winner");
   const subanswer=Meteor.subscribe("answer");
-
-
 
   return {
     messages: Messages.find({}).fetch(),

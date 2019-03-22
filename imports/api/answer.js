@@ -41,7 +41,6 @@ Meteor.methods({
         gameInProgress : true
       });
     }
-
   }
 });
 
@@ -59,7 +58,7 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
     if (Answer.findOne({answer : guess}) != undefined) {
-      Answer.remove({});
+      // Answer.remove({});
       //game over - winner
       return true;
     }

@@ -5,6 +5,8 @@ import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import { Messages } from "../api/messages.js";
 import { Answer } from "../api/answer.js";
+import {withRouter} from "react-router-dom";
+import { Winner } from "../api/winner.js";
 
 
 
@@ -12,20 +14,26 @@ import { Answer } from "../api/answer.js";
 class Drawer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: "",answer: "", winner:false};
+    this.state = {
+      value: "",
+      answer: "",
+      winner:false
+    };
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     // this.answer = {value: ''};
-    this.isPictureName = false;
+    /*this.isPictureName = false;
     this.gameid = "";
     this.handleChange = this.handleChange.bind(this);
     this.ansChange = this.ansChange.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.answerSubmit = this.answerSubmit.bind(this);
+    this.answerSubmit = this.answerSubmit.bind(this);*/
   }
+
 
   saveCanvas() {
     const canvasSave = document.getElementById("drawcanvas");
-    const d = canvasSave.toDataURL("image/png");
+    const d = canvasSave.toDataURL('image/png');
     Meteor.call("canvas.saveCanvas", d, (err,res) => {
       if (err){
         alert("Error recording canvas");
@@ -34,6 +42,7 @@ class Drawer extends React.Component {
       }
       console.log("Canvas inserted", res);
     });
+
     /*const w = window.open('about:blank', 'image from canvas');
         w.document.write("<img src='"+d+"' alt='from canvas'/>");
         console.log('Saved!');*/
@@ -74,10 +83,15 @@ class Drawer extends React.Component {
       });
   }
 
+
   answerSubmit(event) {
     console.log('test');
     this.setState({answer: document.getElementById('correctAnswer').value});
+
     event.preventDefault();
+
+
+
     Meteor.call("drawgame.update",
       {"id":this.gameid,"answer":this.state.answer},
       (err, res) => {
@@ -86,29 +100,30 @@ class Drawer extends React.Component {
           console.log(err);
           return;
         }
+
         console.log("answer added");
         this.setState({
           message: ""
         });
       });
+
   }*/
 
-  componentDidUpdate(){
-    if(this.props.winner){
-      Meteor.call("winner.getWinner", (err,res) => {
-        if (err) {
-          alert("Error getting winner");
-          console.log(err);
-          return;
-        }
-        else if (res!=undefined){
-          alert(res, ", you are the winner!");
-          this.props.history.push("/creategame");
-        }
-      });
-    }
-  }
+//if there is a winner
+//clear canvas
 
+
+  componentDidUpdate(){
+    console.log("state.winner", this.state.winner);
+    console.log("props.winner", this.props.winner);
+
+    if(this.state.winner){
+      //alert(this.props.winner, ", you are the winner!");
+      this.props.history.push("/creategame");
+
+
+    }
+}
   render() {
     return (
       <div>
@@ -127,19 +142,21 @@ class Drawer extends React.Component {
   }
 }
 
-export default withTracker(() => {
-  const handle = Meteor.subscribe("messages");
+/*Drawer.propTypes = {
+  canvas: PropTypes.arrayOf(PropTypes.object).isRequired
+};*/
+
+export default withRouter(withTracker(() => {
+  // const handle = Meteor.subscribe("messages");
   const subwinner=Meteor.subscribe("winner");
-  const c = Meteor.subscribe("canvas");
-  const subanswer=Meteor.subscribe("answer");
-
+  // const c = Meteor.subscribe("canvas");
+  // const subanswer=Meteor.subscribe("answer");
   return {
-    messages: Messages.find({}).fetch(),
+    //messages: Messages.find({}).fetch(),
     user: Meteor.user(),
-    ready : handle.ready() || c.ready()|| subwinner.ready(),
-    canvas: Canvas.find({}).fetch(),
-    answer: Answer.find({}).fetch(),
-    winner: winner.find({}).fetch()
-
+    ready : subwinner.ready(),
+    //canvas: Canvas.find({}).fetch(),
+    //answer: Answer.find({}).fetch(),
+    winner:  Winner.find({}).fetch()
   };
-})(Drawer);
+})(Drawer));

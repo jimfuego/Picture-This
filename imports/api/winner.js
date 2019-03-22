@@ -12,10 +12,10 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  "winner.setWinner"(winner)  {
-    check(winner, String);
+  "winner.setWinner"(theWinner)  {
+    check(theWinner, String);
     Winner.insert({
-      winner: winner
+      winner: theWinner
     });
   }
 });

@@ -3,23 +3,17 @@ import {Meteor} from "meteor/meteor";
 import {Link} from "react-router-dom";
 import {Answer} from "../api/answer.js";
 import {withRouter} from "react-router-dom";
-//import PropTypes from "prop-types";
-//import { Meteor } from "meteor/meteor";
-
-//import { withTracker } from "meteor/react-meteor-data";
-
 
 class Creategame extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: " ", inSession: false};
+    this.state = {value: "", inSession: false};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: document.getElementById("picName").value, inSession: true});
-
   }
 
   handleSubmit(event) {
@@ -37,6 +31,13 @@ class Creategame extends React.Component {
         this.props.history.push("/otherusers");
       }
       else if (res === false){
+        //delete lingering answer from last game
+        Meteor.call("answer.delete", (err) => {
+          console.log("createGame.jsx.handleSubmit failed to delete prev answer", err);
+        });
+        Meteor.call("winner.deleteWinner", (err) => {
+          console.log("createGame.jsx.handleSubmit failed to delete prev winner", err);
+        });
         Meteor.call("answer.insert", this.state.value, (err,res) => {
           if (err){
             alert("Error recording answer");
@@ -53,20 +54,19 @@ class Creategame extends React.Component {
     });
   }
 
-
   render() {
     return (
       <div className="formClass">
-      <h2 className="startgame" text-align="center">Start Game</h2>
-      <form className="gameform" onSubmit={this.handleSubmit}>
-      <label className="picturelabel">
-      Enter Picture Name:
-      <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
-      </label>
-      <input type="submit" value="Submit"/>
-      </form>
+        <h2 className="startgame" text-align="center">Start Game</h2>
+        <form className="gameform" onSubmit={this.handleSubmit}>
+          <label className="picturelabel">
+            Enter Picture Name:
+            <input type="text" id="picName" value={this.state.value} onChange={this.handleChange} />
+          </label>
+          <input type="submit" value="Submit"/>
+        </form>
       </div>
-      );
+    );
   }
 }
 
