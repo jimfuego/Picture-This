@@ -3,16 +3,16 @@ body {
   background-color: #315481;
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
   background-attachment: fixed;
- 
+
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
- 
+
   padding: 0;
   margin: 0;
- 
+
   font-size: 14px;
 }
 
@@ -63,7 +63,7 @@ body {
 
 .startgame{
        margin-top: 250px;
-        text-align :center; 
+        text-align :center;
 }
 
 .main {
@@ -95,20 +95,22 @@ body {
 
 }
 
-
-
-/*.nav-new{
-width: 100%;
-    max-width: 1140px;
-    min-width: 1200p
-
+  li.nav-item {
+    width: 138px;
+    padding: 4% 6%;
+    text-align: center;
+    margin-left: 7px;
 }
 
-@media (min-width: 1200px)
-.nav-new {
-    max-width: 1140px;
-}*/
+li.nav-item a{
+    width: 138px;
+    padding: 4% 6%;
+    text-align: center;
+    margin-left: 7px;
+}
+.container-fluid {
+  width:100%;
+  padding-right: 0px;
+  padding-left: 0px;
 
- 
-
-
+}
