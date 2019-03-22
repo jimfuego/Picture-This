@@ -60,30 +60,30 @@ class Otherusers extends Component {
 
             else {
               Meteor.call("winner.setWinner", Meteor.user().username, (err,res) => {
-                  alert("you are the winner brah");
-                  Meteor.call("answer.delete", (err,res) => {
-                      if (err) {
-                      alert("Error deleting answer");
+                alert("you are the winner brah");
+                Meteor.call("answer.delete", (err,res) => {
+                  if (err) {
+                    alert("Error deleting answer");
                     console.log(err);
-                      return;
-                    }
+                    return;
+                  }
 
-                    else{
-                      console.log("Answer Deleted");
-                    }
-                  });
-                  Meteor.call("canvas.deleteCanvas", (err) => {
-                      if (err) {
-                      alert("Error deleting Canvas");
+                  else{
+                    console.log("Answer Deleted");
+                  }
+                });
+                Meteor.call("canvas.deleteCanvas", (err) => {
+                  if (err) {
+                    alert("Error deleting Canvas");
                     console.log(err);
-                      return;
-                    }
+                    return;
+                  }
 
-                    else{
-                      console.log("Canvas Deleted");
-                    }
-                  });
-                  this.props.history.push("/creategame");
+                  else{
+                    console.log("Canvas Deleted");
+                  }
+                });
+                this.props.history.push("/creategame");
 
               });
 
@@ -92,8 +92,6 @@ class Otherusers extends Component {
         });
 
       //this.props.history.push("/creategame");
-
-
 
       // // Messages.insert(
       // //   {
