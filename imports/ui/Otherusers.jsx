@@ -23,7 +23,7 @@ class Otherusers extends Component {
   }
 
   renderMessages() {
-    this.props.messages.map(m =>
+    return this.props.messages.map(m =>
       <div className="card" key={m._id}>{m.owner} : {m.message}</div>);
   }
 
@@ -63,16 +63,43 @@ class Otherusers extends Component {
 
             else if (res==false) {
               alert("Wrong Answer-Try Again");
-
             }
 
-            else if (res==true){
-              alert("You are the winner");
+            else {
+              
+              Meteor.call("winner.setWinner", Meteor.user.username(), (err,res) => {
+                  alert(res, ", is the winner!");
+
+                  Meteor.call("answer.deleteAnswer", (err) => {
+                      if (err) {
+                      alert("Error deleting answer");
+                    console.log(err);
+                      return;
+                    } 
+
+                    else{
+                      console.log("Answer Deleted");
+                    }
+                  });
+                  Meteor.call("canvas.deleteCanvas", (err) => {
+                      if (err) {
+                      alert("Error deleting Canvas");
+                    console.log(err);
+                      return;
+                    } 
+
+                    else{
+                      console.log("Canvas Deleted");
+                    }
+                  });
+
+              });
+              this.props.history.push("/creategame");
             }
           });
         });
 
-      this.props.history.push("/creategame");
+      //this.props.history.push("/creategame");
 
 
 
@@ -110,6 +137,8 @@ class Otherusers extends Component {
       });*/
   }
 
+
+
   render() {
     console.log("Messages", this.props.messages);
     return (
@@ -145,12 +174,18 @@ Otherusers.propTypes = {
 export default withTracker(() => {
   const handle = Meteor.subscribe("messages");
   const c = Meteor.subscribe("canvas");
+  const subwinner=Meteor.subscribe("winner");
+  const subanswer=Meteor.subscribe("answer");
+
+
 
   return {
     messages: Messages.find({}).fetch(),
     user: Meteor.user(),
-    ready : handle.ready() || c.ready(),
-    canvas: Canvas.find({}).fetch()
+    ready : handle.ready() || c.ready() || subanswer.ready() || subwinner.ready(),
+    canvas: Canvas.find({}).fetch(),
+    answer: Answer.find({}).fetch()
+
 
   };
 })(Otherusers);

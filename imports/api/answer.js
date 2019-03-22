@@ -27,7 +27,7 @@ Meteor.methods({
     if(Answer.findOne({}) != undefined){
       Answer.update({}, {
         $set:{
-          answer : answer,
+          answer :answer,
           player : Meteor.user().username,
           gameInProgress : true
         }

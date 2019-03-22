@@ -3,12 +3,16 @@ import Canvas from "./Canvas.jsx";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
+import { Messages } from "../api/messages.js";
+import { Answer } from "../api/answer.js";
+
+
 
 
 class Drawer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: "",answer: ""};
+    this.state = {value: "",answer: "", winner:false};
     // this.answer = {value: ''};
     this.isPictureName = false;
     this.gameid = "";
@@ -38,7 +42,7 @@ class Drawer extends React.Component {
   }
 
 
-  handleChange(event) {
+  /*handleChange(event) {
     // this.setState({value: event.target.value});
     this.setState({value: document.getElementById('picName').value});
 
@@ -96,8 +100,31 @@ class Drawer extends React.Component {
         });
       });
 
-  }
+  }*/
 
+//if there is a winner
+//clear canvas
+
+
+componentDidUpdate(){
+  if(this.props.winner){
+    Meteor.call("winner.getWinner", (err,res) => {
+          if (err) {
+          alert("Error getting winner");
+          console.log(err);
+          return;
+        }
+
+        else if (res!=undefined){
+           alert(res, ", you are the winner!");
+           this.props.history.push("/creategame");
+
+        }
+
+    });
+
+  }
+}
   render() {
     return (
       <div>
@@ -111,7 +138,6 @@ class Drawer extends React.Component {
             </div>
           </Fragment>
         }
-
       </div>
     );
   }
@@ -119,7 +145,18 @@ class Drawer extends React.Component {
 
 export default withTracker(() => {
   const handle = Meteor.subscribe("messages");
+  const subwinner=Meteor.subscribe("winner");
+  const c = Meteor.subscribe("canvas");
+  const subanswer=Meteor.subscribe("answer");
+
+
   return {
+    messages: Messages.find({}).fetch(),
+    user: Meteor.user(),
+    ready : handle.ready() || c.ready()|| subwinner.ready(),
+    canvas: Canvas.find({}).fetch(),
+    answer: Answer.find({}).fetch(),
+    winner: winner.find({}).fetch()
 
   };
 })(Drawer);
