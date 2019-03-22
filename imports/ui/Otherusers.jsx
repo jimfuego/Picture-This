@@ -1,7 +1,6 @@
-import React, { Component,Redirect } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-
 import { withTracker } from "meteor/react-meteor-data";
 import { Messages } from "../api/messages.js";
 import {Canvas} from "../api/canvas.js";
@@ -19,6 +18,11 @@ class Otherusers extends Component {
   }
 
   renderMessages() {
+    if(this.props.endGame[0] &&
+       this.props.endGame[0].gameInProgress == false){
+      alert("Game over... you lost.");
+      this.props.history.push("/creategame");
+    }
     return this.props.messages.map(m =>
       <div className="card" key={m._id}>{m.owner} : {m.message}</div>);
   }
@@ -28,9 +32,6 @@ class Otherusers extends Component {
     this.setState({
       message: evt.target.value
     });
-
-
-
   }
 
   onKey(evt) {
@@ -55,7 +56,7 @@ class Otherusers extends Component {
             }
             else {
               Meteor.call("winner.setWinner", Meteor.user().username, (err,res) => {
-                Meteor.call("answer.endGame", (err, res) => {
+                Meteor.call("answer.endGame", (err) => {
                   if(err){
                     console.log("error ending game Otherusers.jsx", err);
                   }
@@ -64,16 +65,6 @@ class Otherusers extends Component {
                   }
                 });
                 alert("you are the winner brah", res);
-                // Meteor.call("answer.delete", (err) => {
-                //   if (err) {
-                //     alert("Error deleting answer");
-                //     console.log(err);
-                //     return;
-                //   }
-                //   else{
-                //     console.log("Answer Deleted");
-                //   }
-                // });
                 Meteor.call("canvas.deleteCanvas", (err) => {
                   if (err) {
                     alert("Error deleting Canvas");
@@ -138,8 +129,8 @@ export default withTracker(() => {
     user: Meteor.user(),
     ready : handle.ready() || c.ready() || subanswer.ready() || subwinner.ready(),
     canvas: Canvas.find({}).fetch(),
-    answer: Answer.find({}).fetch()
-
+    answer: Answer.find({}).fetch(),
+    endGame: Answer.find({}).fetch()
 
   };
 })(Otherusers);

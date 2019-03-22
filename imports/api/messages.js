@@ -17,6 +17,11 @@ if (Meteor.isServer) {
   });
 }
 
+Meteor.methods({
+  "messages.deleteAll"() {
+    Messages.remove({});
+  }
+});
 
 Meteor.methods({
   "messages.insert"(message)  {

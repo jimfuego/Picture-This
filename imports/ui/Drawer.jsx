@@ -1,13 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import Canvas from "./Canvas.jsx";
-import PropTypes from "prop-types";
+import { PropTypes } from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
-import { Messages } from "../api/messages.js";
 import { Answer } from "../api/answer.js";
 import {withRouter} from "react-router-dom";
-import { Winner } from "../api/winner.js";
-
 
 
 
@@ -18,6 +15,9 @@ class Drawer extends React.Component {
       value: "",
       answer: "",
       winner:""
+    };
+    const propTypes = {
+      endGame: PropTypes.string.isRequired,
     };
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     // this.answer = {value: ''};
@@ -49,19 +49,6 @@ class Drawer extends React.Component {
       alert("Game over... nice drawing.");
       this.props.history.push("/creategame");
     }
-
-    // console.log("state.winner", this.state.winner);
-    // Meteor.call("answer.checkInProgress", (err, res) => {
-    //   if (res){
-    //     //do nothing
-    //     console.log("Game still in progress", res);
-    //   }
-    //   else{
-    //     //game is over
-    //     alert("Game over... nice drawing.");
-    //     this.props.history.push("/creategame");
-    //   }
-    // });
   }
 
   render() {
@@ -86,16 +73,15 @@ class Drawer extends React.Component {
   canvas: PropTypes.arrayOf(PropTypes.object).isRequired
 };*/
 
+
+
+
+
 export default withRouter(withTracker(() => {
-  // const handle = Meteor.subscribe("messages");
-  const subwinner=Meteor.subscribe("winner");
   const answer=Meteor.subscribe("answer");
-  // const c = Meteor.subscribe("canvas");
-  // const subanswer=Meteor.subscribe("answer");
   return {
     user: Meteor.user(),
     ready : answer.ready(),
     endGame:  Answer.find({}).fetch()
-    // inProgress: answer.findOne({inProgress:false}).fetch()
   };
 })(Drawer));

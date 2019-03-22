@@ -17,7 +17,6 @@ class Creategame extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
     this.setState({value: document.getElementById("picName").value});
     event.preventDefault();
     Meteor.call("answer.checkInProgress", (err, res) => {
@@ -32,6 +31,11 @@ class Creategame extends React.Component {
         this.props.history.push("/otherusers");
       }
       else if (res === false){
+        Meteor.call("messages.deleteAll"), (err) => {
+          if (err){
+            console.log("failed to delete guesses Creategame.jsx.handleSubmit");
+          }
+        }
         //delete canvas from last game
         Meteor.call("canvas.deleteCanvas", (err) => {
           if(err){
@@ -57,6 +61,7 @@ class Creategame extends React.Component {
             console.log(err);
             return;
           }
+          alert("A name was submitted: " + this.state.value);
           console.log("Answer inserted", this.state.value);
           this.props.history.push("/drawer");
           this.setState({
