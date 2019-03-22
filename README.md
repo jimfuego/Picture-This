@@ -1,5 +1,5 @@
 # [Picture-This]()
-Picture-This is a picture guessing game that allows users to guess the name of a picture drawn by another user. Game ends if a user guesses right
+Picture-This is a picture guessing game that allows users to guess the name of a picture drawn by game master. Game ends if a user guesses right
 
 ## Preview
 
@@ -26,7 +26,7 @@ Load the [URL]() onto your browser,
 
 
 ## Authors
-* [Jimmy Borzilleri](https://github.com/jimfuego)
+* [Jimmy Borzillieri](https://github.com/jimfuego)
 * [Abasiama Akpan](https://github.com/abasiamaakpan)
 
 ## Class Reference 
