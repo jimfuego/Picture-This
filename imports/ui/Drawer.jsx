@@ -40,92 +40,28 @@ class Drawer extends React.Component {
         console.log(err);
         return;
       }
-      // console.log("Canvas inserted", res);
     });
-
-    /*const w = window.open('about:blank', 'image from canvas');
-        w.document.write("<img src='"+d+"' alt='from canvas'/>");
-        console.log('Saved!');*/
   }
-
-
-  /*handleChange(event) {
-    // this.setState({value: event.target.value});
-    this.setState({value: document.getElementById('picName').value});
-
-  }
-  ansChange(event) {
-    this.setState({answer: document.getElementById('correctAnswer').value});
-
-  }
-
-  handleSubmit(event) {
-    this.setState({value: document.getElementById('picName').value});
-
-    this.isPictureName = true;
-
-    event.preventDefault();
-
-    console.log(this.state.value);
-    Meteor.call("drawgame.insert",
-      this.state.value,
-      (err, res) => {
-        if (err) {
-          alert("There was error inserting check the console");
-          console.log(err);
-          return;
-        }
-        this.gameid = res;
-        console.log("Game name inserted");
-        this.setState({
-          value: ""
-        });
-      });
-  }
-
-
-  answerSubmit(event) {
-    console.log('test');
-    this.setState({answer: document.getElementById('correctAnswer').value});
-
-    event.preventDefault();
-
-
-
-    Meteor.call("drawgame.update",
-      {"id":this.gameid,"answer":this.state.answer},
-      (err, res) => {
-        if (err) {
-          alert("There was error inserting check the console");
-          console.log(err);
-          return;
-        }
-
-        console.log("answer added");
-        this.setState({
-          message: ""
-        });
-      });
-
-  }*/
-
-//if there is a winner
-//clear canvas
-
 
   componentDidUpdate(){
-    console.log("state.winner", this.state.winner);
-    Meteor.call("answer.checkInProgress", (err, res) => {
-      if (res){
-        //do nothing
-        console.log("Game still in progress", res);
-      }
-      else{
-        //game is over
-        alert("Game over... nice drawing.");
-        this.props.history.push("/creategame");
-      }
-    });
+    if(this.props.endGame[0] &&
+       this.props.endGame[0].gameInProgress == false){
+      alert("Game over... nice drawing.");
+      this.props.history.push("/creategame");
+    }
+
+    // console.log("state.winner", this.state.winner);
+    // Meteor.call("answer.checkInProgress", (err, res) => {
+    //   if (res){
+    //     //do nothing
+    //     console.log("Game still in progress", res);
+    //   }
+    //   else{
+    //     //game is over
+    //     alert("Game over... nice drawing.");
+    //     this.props.history.push("/creategame");
+    //   }
+    // });
   }
 
   render() {
@@ -159,7 +95,7 @@ export default withRouter(withTracker(() => {
   return {
     user: Meteor.user(),
     ready : answer.ready(),
-    winner:  Winner.find({}).fetch()
+    endGame:  Answer.find({}).fetch()
     // inProgress: answer.findOne({inProgress:false}).fetch()
   };
 })(Drawer));

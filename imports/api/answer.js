@@ -8,7 +8,7 @@ export const Answer = new Mongo.Collection("answer");
 
 if (Meteor.isServer) {
   Meteor.publish("answer", function guessesPublish() {
-    return (Answer.findOne({gameInProgress : true}));
+    return (Answer.find({}));
   });
 }
 
