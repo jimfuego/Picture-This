@@ -23,10 +23,9 @@ class Drawer extends React.Component {
     this.answerSubmit = this.answerSubmit.bind(this);
   }
 
-
   saveCanvas() {
     const canvasSave = document.getElementById("drawcanvas");
-    const d = canvasSave.toDataURL('image/png');
+    const d = canvasSave.toDataURL("image/png");
     Meteor.call("canvas.saveCanvas", d, (err,res) => {
       if (err){
         alert("Error recording canvas");
@@ -35,7 +34,6 @@ class Drawer extends React.Component {
       }
       console.log("Canvas inserted", res);
     });
-
     /*const w = window.open('about:blank', 'image from canvas');
         w.document.write("<img src='"+d+"' alt='from canvas'/>");
         console.log('Saved!');*/
@@ -76,15 +74,10 @@ class Drawer extends React.Component {
       });
   }
 
-
   answerSubmit(event) {
     console.log('test');
     this.setState({answer: document.getElementById('correctAnswer').value});
-
     event.preventDefault();
-
-
-
     Meteor.call("drawgame.update",
       {"id":this.gameid,"answer":this.state.answer},
       (err, res) => {
@@ -93,38 +86,29 @@ class Drawer extends React.Component {
           console.log(err);
           return;
         }
-
         console.log("answer added");
         this.setState({
           message: ""
         });
       });
-
   }*/
 
-//if there is a winner
-//clear canvas
-
-
-componentDidUpdate(){
-  if(this.props.winner){
-    Meteor.call("winner.getWinner", (err,res) => {
-          if (err) {
+  componentDidUpdate(){
+    if(this.props.winner){
+      Meteor.call("winner.getWinner", (err,res) => {
+        if (err) {
           alert("Error getting winner");
           console.log(err);
           return;
         }
-
         else if (res!=undefined){
-           alert(res, ", you are the winner!");
-           this.props.history.push("/creategame");
-
+          alert(res, ", you are the winner!");
+          this.props.history.push("/creategame");
         }
-
-    });
-
+      });
+    }
   }
-}
+
   render() {
     return (
       <div>
@@ -148,7 +132,6 @@ export default withTracker(() => {
   const subwinner=Meteor.subscribe("winner");
   const c = Meteor.subscribe("canvas");
   const subanswer=Meteor.subscribe("answer");
-
 
   return {
     messages: Messages.find({}).fetch(),
