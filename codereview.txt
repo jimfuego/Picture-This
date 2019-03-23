@@ -1,0 +1,6 @@
+Great App!
+Really liked the ability to draw and show people what they should be guessing.
+Would be really fun to chain it together in a sort of telephone game.
+You have a LOT of code on the server side doing similar things, each different method has its own collection etc. It would streamline it a little to pass an extra parameter in, and just have one or two update functions.
+I would also go through and delete all the commented out code, that would clean things up nicely. Make it a little more professional.
+Maybe add rooms? so that more then one person can be playing at a time, you have all the components for it making another container, and restructuring the database wouldn't be to hard at all. #nextsteps!
